@@ -4,6 +4,20 @@
 
 @section('content')
 <div class="container-form">
+
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-error">
+        {{ session('error') }}
+    </div>
+@endif
+
+
     <h2>Carreras</h2>
 <button 
     class="btn-agregar" 
@@ -13,8 +27,6 @@
     data-campos='@json(["nombre"=>"","clave"=>""])'>
     Agregar Carrera
 </button>
-
-
 
     <table class="tabla-docentes">
         <thead>
