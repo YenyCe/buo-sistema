@@ -1,48 +1,60 @@
 <script>
-let modalActual = 'modalGenerico';
+document.addEventListener("DOMContentLoaded", () => {
 
-function abrirModalGen(titulo, action, method='POST', campos={}) {
-    const modal = document.getElementById(modalActual);
+    const modal = document.getElementById('modalGenerico');
     const form = document.getElementById('formGenerico');
     const camposDiv = document.getElementById('camposGenericos');
+    const tituloModal = document.getElementById('tituloModalGenerico');
 
-    modal.style.display = 'block';
-    document.getElementById('tituloModalGenerico').innerText = titulo;
-    form.action = action;
-    form.method = 'POST';
-    camposDiv.innerHTML = '';
+    // Abrir modal para cualquier botón
+    document.querySelectorAll(".btn-agregar, .btn-editar").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const title = btn.dataset.title;
+            const action = btn.dataset.action;
+            const method = btn.dataset.method;
+            const campos = JSON.parse(btn.dataset.campos);
 
-    const oldMethod = form.querySelector('input[name="_method"]');
-    if(oldMethod) oldMethod.remove();
+            tituloModal.innerText = title;
+            form.action = action;
 
-    if(method.toUpperCase() !== 'POST') {
-        const methodInput = document.createElement('input');
-        methodInput.type = 'hidden';
-        methodInput.name = '_method';
-        methodInput.value = method.toUpperCase();
-        form.appendChild(methodInput);
-    }
+            // Manejar método PUT/DELETE
+            let hiddenMethod = form.querySelector("input[name='_method']");
+            if(hiddenMethod) hiddenMethod.remove();
+            if(method !== "POST"){
+                hiddenMethod = document.createElement("input");
+                hiddenMethod.type = "hidden";
+                hiddenMethod.name = "_method";
+                hiddenMethod.value = method;
+                form.appendChild(hiddenMethod);
+            }
 
-    for(const key in campos){
-        const label = document.createElement('label');
-        label.innerText = key.charAt(0).toUpperCase() + key.slice(1);
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.name = key;
-        input.value = campos[key] ?? '';
-        input.required = true;
+            // Limpiar campos anteriores
+            camposDiv.innerHTML = "";
+            for(const key in campos){
+                const label = document.createElement("label");
+                label.innerText = key.charAt(0).toUpperCase() + key.slice(1);
+                const input = document.createElement("input");
+                input.type = "text";
+                input.name = key;
+                input.value = campos[key];
+                input.required = true;
+                camposDiv.appendChild(label);
+                camposDiv.appendChild(input);
+            }
 
-        camposDiv.appendChild(label);
-        camposDiv.appendChild(input);
-    }
-}
+            modal.style.display = "block";
+        });
+    });
 
-function cerrarModal() {
-    document.getElementById(modalActual).style.display = 'none';
-}
+    // Cerrar modal
+    document.querySelector(".cerrar").addEventListener("click", () => {
+        modal.style.display = "none";
+    });
 
-window.onclick = function(event) {
-    const modal = document.getElementById(modalActual);
-    if(event.target == modal) cerrarModal();
-}
+    window.addEventListener("click", e => {
+        if(e.target == modal) modal.style.display = "none";
+    });
+
+});
+
 </script>

@@ -5,11 +5,17 @@
 @section('content')
 <div class="container-form">
     <h2>Carreras</h2>
+<button 
+    class="btn-agregar" 
+    data-title="Agregar Carrera"
+    data-action="{{ route('carreras.store') }}"
+    data-method="POST"
+    data-campos='@json(["nombre"=>"","clave"=>""])'>
+    Agregar Carrera
+</button>
 
-    <button class="btn-agregar" 
-        onclick="abrirModalGen('Agregar Carrera', '{{ route('carreras.store') }}', 'POST', {nombre:'', clave:''})">
-        Agregar Carrera
-    </button>
+
+
     <table class="tabla-docentes">
         <thead>
             <tr><th>ID</th><th>Nombre</th><th>Clave</th><th>Acciones</th></tr>
@@ -21,15 +27,17 @@
                 <td>{{ $c->nombre }}</td>
                 <td>{{ $c->clave }}</td>
                 <td>
-                    <button class="btn-editar"
-                        onclick="abrirModalGen(
-                            'Editar Carrera',
-                            '/carreras/{{ $c->id }}',
-                            'PUT',
-                            {nombre:'{{ $c->nombre }}', clave:'{{ $c->clave }}'}
-                        )">
-                        Editar
-                    </button>
+                    <button 
+            class="btn-editar"
+            data-title="Editar Carrera"
+            data-action="{{ route('carreras.update', $c->id) }}"
+            data-method="PUT"
+            data-campos='@json(["nombre"=>$c->nombre,"clave"=>$c->clave])'>
+            Editar
+        </button>
+
+
+
                     <form action="{{ route('carreras.destroy', $c->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
