@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const camposDiv = document.getElementById('camposGenericos');
     const tituloModal = document.getElementById('tituloModalGenerico');
 
-    // Abrir modal para cualquier botón
+    // Abrir modal
     document.querySelectorAll(".btn-agregar, .btn-editar").forEach(btn => {
         btn.addEventListener("click", () => {
             const title = btn.dataset.title;
@@ -17,10 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
             tituloModal.innerText = title;
             form.action = action;
 
-            // Manejar método PUT/DELETE
+            // Método PUT
             let hiddenMethod = form.querySelector("input[name='_method']");
-            if(hiddenMethod) hiddenMethod.remove();
-            if(method !== "POST"){
+            if (hiddenMethod) hiddenMethod.remove();
+
+            if (method !== "POST") {
                 hiddenMethod = document.createElement("input");
                 hiddenMethod.type = "hidden";
                 hiddenMethod.name = "_method";
@@ -28,16 +29,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 form.appendChild(hiddenMethod);
             }
 
-            // Limpiar campos anteriores
+            // Generar campos
             camposDiv.innerHTML = "";
-            for(const key in campos){
+            for (const key in campos) {
                 const label = document.createElement("label");
-                label.innerText = key.charAt(0).toUpperCase() + key.slice(1);
+                label.innerText = key.toUpperCase();
+
                 const input = document.createElement("input");
                 input.type = "text";
                 input.name = key;
-                input.value = campos[key];
+                input.value = campos[key] ?? "";
                 input.required = true;
+
                 camposDiv.appendChild(label);
                 camposDiv.appendChild(input);
             }
@@ -52,9 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     window.addEventListener("click", e => {
-        if(e.target == modal) modal.style.display = "none";
+        if (e.target === modal) modal.style.display = "none";
     });
 
 });
-
 </script>

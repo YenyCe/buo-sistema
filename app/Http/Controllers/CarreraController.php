@@ -20,7 +20,10 @@ class CarreraController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'clave' => 'required|string|max:20|unique:carreras,clave',
+        ], [
+            'clave.unique' => 'La clave ya existe, usa otra diferente.',
         ]);
+
 
         Carrera::create($request->only('nombre','clave'));
 
@@ -32,7 +35,9 @@ class CarreraController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'clave' => 'required|string|max:20|unique:carreras,clave,'.$carrera->id,
+            'clave'  => 'required|string|max:20|unique:carreras,clave,'.$carrera->id,
+        ], [
+            'clave.unique' => 'La clave ya existe, usa otra diferente.',
         ]);
 
         $carrera->update($request->only('nombre','clave'));

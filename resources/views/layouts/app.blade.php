@@ -13,13 +13,14 @@
 
     <ul>
         <li><a href="#">🏠 Inicio</a></li>
-        <li><a href="{{ route('carreras.index') }}" class="active">🎓 Carreras</a></li>
-        <li><a href="#">👩‍🏫 Docentes</a></li>
+        <li><a href="{{ route('carreras.index') }}" class="">🎓 Carreras</a></li>
+        <li><a href="{{ route('docentes.index') }}" class="active">👩‍🏫 Docentes</a></li>
         <li><a href="#">📘 Materias</a></li>
     </ul>
 </div>
 
 <div class="main">
+    @include('partials.alerts')
     @yield('content')
 </div>
 @yield('scripts') <!-- <-- Aquí se cargan los scripts de cada Blade -->
